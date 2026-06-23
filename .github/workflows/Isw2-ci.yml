@@ -20,5 +20,9 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+
+      - name: Setup native build
+        uses: ./.github/actions/setup-native-build
+
       - name: Build and test
         run: mvn clean compile # usa verify per runnare i test
