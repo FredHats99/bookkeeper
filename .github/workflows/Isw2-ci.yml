@@ -6,6 +6,7 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,5 +25,5 @@ jobs:
       - name: Setup native build
         uses: ./.github/actions/setup-native-build
 
-      - name: Build and test
-        run: mvn clean compile # usa verify per runnare i test
+      - name: Build
+        run: mvn -T 1C -B -nsu clean install -Ddistributedlog -DskipTests
