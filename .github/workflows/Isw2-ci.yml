@@ -29,4 +29,25 @@ jobs:
         run: mvn -T 1C -B -nsu clean install -Ddistributedlog -DskipTests
 
       - name: Run ISW2 tests
-        run: mvn -T 1C -B -nsu test -Ddistributedlog -DskipTests=false -Dtest='*ISW2*Test' -DfailIfNoTests=false -Dsurefire.failIfNoSpecifiedTests=false
+        shell: bash
+        run: |
+          mapfile -t test_files < <(find . -path '*/src/test/java/*ISW2*Test.java' -print)
+
+          if [ "${#test_files[@]}" -eq 0 ]; then
+            echo "No ISW2 tests found."
+            exit 0
+          fi
+
+          modules=$(printf '%s\n' "${test_files[@]}" \
+            | sed -E 's#^\./##; s#/src/test/java/.*##' \
+            | sort -u \
+            | paste -sd, -)
+
+          echo "Running ISW2 tests in modules: $modules"
+
+          mvn -T 1C -B -nsu -pl "$modules" -am test \
+            -Ddistributedlog \
+            -DskipTests=false \
+            -Dtest='*ISW2*Test' \
+            -DfailIfNoTests=false \
+            -Dsurefire.failIfNoSpecifiedTests=false

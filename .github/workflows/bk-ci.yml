@@ -20,14 +20,6 @@
 name: BookKeeper CI
 
 on:
-  pull_request:
-    branches:
-      - master
-      - branch-*
-  push:
-    branches:
-      - master
-      - branch-*
   workflow_dispatch:
 
 env:
