@@ -27,3 +27,6 @@ jobs:
 
       - name: Build
         run: mvn -T 1C -B -nsu clean install -Ddistributedlog -DskipTests
+
+      - name: Run ISW2 tests
+        run: mvn -T 1C -B -nsu test -Ddistributedlog -DskipTests=false -Dtest='*ISW2*Test' -DfailIfNoTests=false -Dsurefire.failIfNoSpecifiedTests=false
